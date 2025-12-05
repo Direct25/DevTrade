@@ -62,7 +62,7 @@ export const sendResetSuccessEmail = async (email) => {
       from: sender,
       to: email,
       subject: "Password Reset Successful",
-      html: PASSWORD_RESET_SUCCESS_TEMPLATE,
+      html: PASSWORD_RESET_SUCCESS_TEMPLATE.replace("{supportLink}", `${process.env.CLIENT_URL}/support`),
     });
 
     console.log("Password reset success email sent:", response);
