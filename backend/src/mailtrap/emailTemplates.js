@@ -23,7 +23,7 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
         </div>
 
         <p style="font-size: 16px;">Enter this code on the verification page to complete your registration.</p>
-        <p style="font-size: 16px;">This code will expire in 10 minutes for security reasons.</p>
+        <p style="font-size: 16px;">This code will expire in 24 hours for security reasons.</p>
         <p style="font-size: 16px;">If you didn't create an account with us, please ignore this email.</p>
 
         <p style="font-size: 16px; margin-top: 30px;">Best regards,<br />The App Team</p>
