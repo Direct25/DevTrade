@@ -1,11 +1,82 @@
 import bcryptjs from "bcryptjs";
 import crypto from "crypto";
 import { generateTokenAndCookie } from "../utils/generateToken.js";
-import { sendVerificationEmail } from "../mailtrap/emails.js";
-import { sendWelcomeEmail } from "../mailtrap/emails.js";
-import { sendPasswordResetEmail } from "../mailtrap/emails.js";
-import { sendResetSuccessEmail } from "../mailtrap/emails.js";
 import User from "../models/user.model.js"
+import axios from "axios";
+import jwt from "jsonwebtoken";
+
+export const sendOtp = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const response = await axios.post(
+      "https://api.mojoauth.com/users/emailotp",
+      { email },
+      {
+        headers: {
+          "X-API-KEY": process.env.MOJOAUTH_API_KEY,
+        },
+      }
+    );
+
+    return res.status(200).json({
+      message: "OTP sent to email",
+      data: response.data,
+    });
+
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+
+export const verifyOtp = async (req, res) => {
+  try {
+    const { state_id, otp, name, password} = req.body;
+
+    const response = await axios.post(
+      "https://api.mojoauth.com/users/emailotp/verify",
+      { state_id, otp },
+      {
+        headers: {
+          "X-API-KEY": process.env.MOJOAUTH_API_KEY
+        }
+      }
+    );
+
+    // OTP failed
+    if (!response.data.authenticated) {
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    // OTP passed
+    const verifiedEmail = response.data.user.email;
+
+    // Lookup or create user
+    let user = await User.findOne({ email: verifiedEmail });
+
+    if (!user) {
+      
+      user = await User.create({ email: verifiedEmail, name, password });
+    }
+
+    // Create JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d"
+    });
+
+    return res.status(200).json({
+      message: "OTP Verified",
+      user,
+      token
+    });
+
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+
 
 export const signup = async (req, res) => {
   const { email, password, name } = req.body;

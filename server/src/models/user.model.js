@@ -72,17 +72,25 @@ const userSchema = new mongoose.Schema(
       default: 0, // used to invalidate refresh tokens
     },
 
-    isVerified: {
+    emailVerified: {
       type: Boolean,
       default: false,
+    },
+    emailVerificationToken: {
+      type: String,
+    },
+    emailVerificationTokenExpiresAt: {
+      type: Date,
     },
     lastLogin: {
       type: Date,
     },
-    resetpasswordToken: String,
-    resetpasswordExpires: Date,
-    verificationToken: String,
-    verificationExpiresAt: Date,
+    resetpasswordToken: {
+      String,
+    },
+    resetpasswordExpires: {
+      Date,
+    }
   },
 
   { timestamps: true }
