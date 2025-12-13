@@ -1,10 +1,16 @@
 import express from 'express';
-import { login, logout, signup, verifyEmail, forgotPassword, resetPassword} from '../controllers/auth.controller.js'
+import { login, logout, signup, verifyEmail, forgotPassword, resetPassword, sendOtp, verifyOtp} from '../controllers/auth.controller.js'
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
 router.post("/signup", signup);
+// router.post("/signup/magiclink", sendMagicLink);
+// router.get("/magiclink/callback", verifyMagicLink);
+router.post("/send-otp", sendOtp);
+router.post("/verify-otp", verifyOtp);
+
+
 router.post("/login", login);
 router.post("/logout", logout);
 
