@@ -195,13 +195,6 @@ export const signup = async (req, res) => {
   try {
     const { name, password, tempToken } = req.body;
 
-    // console.log(req.body);
-    
-
-    // console.log(tempToken);
-    // console.log(name);
-    // console.log(password);
-    
 
     if (!name || !password || !tempToken) {
       return res.status(400).json({ message: "Missing required fields" });
