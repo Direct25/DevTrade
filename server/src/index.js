@@ -4,7 +4,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { connectDB } from "./config/db.js";
 import authRoute from "./routes/auth.route.js";
-import projectRoute from "./routes/project.route.js"
+import projectRoute from "./routes/project.route.js";
+import transactionRoute from "./routes/transaction.route.js";
 import path from "path";
 import mongoose from "mongoose";
 
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoute);
 app.use("/api/project", projectRoute);
+app.use("/api/transaction", transactionRoute);
 
 
 
